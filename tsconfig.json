@@ -9,7 +9,16 @@
     "preserveConstEnums": true,
     "sourceMap": true,
     "strictNullChecks": true,
-    "strict": false,
-    "allowJs": false
-  }
+    "strict": true,
+    "allowJs": false,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }
