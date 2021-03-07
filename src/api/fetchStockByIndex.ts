@@ -18,7 +18,7 @@ interface StockIndexResponse {
   results: StockResponse[]
 }
 
-interface Stock {
+export interface Stock {
   name: string
   price: number
   lossChance: number
@@ -57,6 +57,7 @@ const fetchStockByIndex = async (
     const { data }: AxiosResponse<StockIndexResponse> = await axios.get(
       `https://raw.githubusercontent.com/ipiranhaa/stock-z-lector/main/src/indexing/${index}.json`
     )
+    console.log(`Fetch ${index} stock.`)
     return {
       createdAt: data.createdAt,
       results: stockModelMapper(data.results),

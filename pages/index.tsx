@@ -1,25 +1,23 @@
 import Head from 'next/head'
 
 import fetchStockByIndex, { StockIndex } from '../src/api/fetchStockByIndex'
+import StockCard from '../src/components/stockCard'
 
 interface Props {
-  setHD: StockIndex
+  set100: StockIndex
 }
 
-const Home = ({ setHD }: Props) => {
-  console.log(setHD)
+const Home = ({ set100 }: Props) => {
   return (
     <div>
       <Head>
         <title>Stock Z-Lector</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="gridgrid-cols-1 gap-4">
-        <div>updated: {setHD.createdAt}</div>
-        {setHD.results.map((stock, index) => (
-          <div key={index}>
-            {index + 1}: {stock.name}
-          </div>
+      <div className="grid gap-4 grid-cols-1 bg-gray-100">
+        <div>updated: {set100.createdAt}</div>
+        {set100.results.map((stock, index) => (
+          <StockCard key={index} stock={stock} tags={['SET100']} />
         ))}
       </div>
     </div>
@@ -27,10 +25,9 @@ const Home = ({ setHD }: Props) => {
 }
 
 export async function getServerSideProps() {
-  const setHDResponse = await fetchStockByIndex('SETHD')
-  console.log(setHDResponse)
+  const set100Response = await fetchStockByIndex('SET100')
 
-  if (!setHDResponse) {
+  if (!set100Response) {
     return {
       notFound: true,
     }
@@ -38,7 +35,7 @@ export async function getServerSideProps() {
 
   return {
     props: {
-      setHD: setHDResponse,
+      set100: set100Response,
     },
   }
 }
