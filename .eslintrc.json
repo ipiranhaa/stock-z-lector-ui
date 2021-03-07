@@ -13,5 +13,5 @@
     }
   },
   "extends": ["airbnb", "prettier"],
-  "plugins": ["@typescript-eslint", "import", "react-hooks"]
+  "plugins": ["@typescript-eslint", "import", "react-hooks", "plugin:tailwind/recommended"]
 }
