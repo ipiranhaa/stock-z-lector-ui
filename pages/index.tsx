@@ -15,7 +15,9 @@ const Home = ({ set100 }: Props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="grid gap-4 grid-cols-1 bg-gray-100">
-        <div>updated: {set100.createdAt}</div>
+        <div className="inline-block mt-2 px-4 text-right text-gray-800 text-xs">
+          Updated {set100.createdAt}
+        </div>
         {set100.results.map((stock, index) => (
           <StockCard key={index} stock={stock} tags={['SET100']} />
         ))}
