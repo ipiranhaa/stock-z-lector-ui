@@ -1,20 +1,27 @@
 import React from 'react'
 import { Stock } from '../api/fetchStockByIndex'
-import Tag from './tag'
+import Tag from './Tag'
+import ChatIcon from './icons/Chat'
 
 interface Props {
+  order: number
   stock: Stock
   tags: string[]
 }
 
-const StockCard = ({ stock, tags }: Props) => {
+const StockCard = ({ order, stock, tags }: Props) => {
   return (
     <div className="px-4">
       <div className="p-4 bg-white rounded-lg shadow-lg">
-        <div className="flex items-baseline">
-          {tags.map((tag, index) => (
-            <Tag key={index} label={tag} />
-          ))}
+        <div className="flex items-baseline justify-between">
+          <div className="">
+            {tags.map((tag, index) => (
+              <Tag key={index} label={tag} />
+            ))}
+          </div>
+          <div className="">
+            <Tag label={String(order)} />
+          </div>
         </div>
 
         <div className="grid grid-cols-2 mb-2">
@@ -24,26 +31,14 @@ const StockCard = ({ stock, tags }: Props) => {
               <span className="text-gray-600 text-sm">฿ {stock.price}</span>
             </div>
             <div className="mt-1">
-              <span className="text-gray-600 text-sm">PE {stock.pe}</span>
+              <span className="text-gray-600 text-sm">P/E {stock.pe}</span>
+            </div>
+            <div className="mt-1">
+              <span className="text-gray-600 text-sm">P/BV {stock.pbv}</span>
             </div>
             <div className="mt-1">
               <span className="justify-items-center text-gray-600 text-sm">
-                <svg
-                  className="inline-block"
-                  width={16}
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1"
-                    d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"
-                  />
-                </svg>{' '}
-                {stock.advice}
+                <ChatIcon /> {stock.advice}
               </span>
             </div>
           </div>
@@ -56,9 +51,11 @@ const StockCard = ({ stock, tags }: Props) => {
               </span>
             </div>
             <div className="mt-1">
-              <span className="text-gray-600 text-sm">{stock.factorPercentage}% Factor</span>
+              <span className="text-gray-600 text-sm">{stock.factorPercentage}% Factors rate</span>
             </div>
-
+            <div className="mt-1">
+              <span className="text-gray-600 text-sm">{stock.dvdYield}% DVD Yield</span>
+            </div>
             <div className="mt-1">
               <span className="text-gray-600 text-sm">{stock.lossChance}% Loss chance</span>
             </div>

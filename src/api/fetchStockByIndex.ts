@@ -7,7 +7,9 @@ interface StockResponse {
   linePercentage: string
   score: number
   factorPercentage: string
-  pe: number | null
+  pe: number
+  pbv: number
+  dvdYield: string
   advice: string
   industry: string
   sector: string
@@ -25,7 +27,9 @@ export interface Stock {
   linePercentage: number
   score: number
   factorPercentage: number
-  pe: number | '-'
+  pe: number
+  pbv: number
+  dvdYield: number
   advice: string
   industry: string
   sector: string
@@ -44,7 +48,9 @@ const stockModelMapper = (stockResponses: StockResponse[]): Stock[] =>
     linePercentage: Number(response.linePercentage.slice(0, -1).split(',').join('')),
     score: response.score,
     factorPercentage: Number(response.factorPercentage.slice(0, -1)),
-    pe: response.pe ?? '-',
+    pe: response.pe,
+    pbv: response.pbv,
+    dvdYield: Number(response.dvdYield.slice(0, -1)),
     advice: response.advice,
     industry: response.industry,
     sector: response.sector,

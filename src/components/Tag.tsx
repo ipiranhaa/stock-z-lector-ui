@@ -5,7 +5,7 @@ interface Props {
 }
 
 const Tag = ({ label }: Props) => (
-  <span className="bg-gray-200 text-gray-800 mr-2 text-xs px-2 inline-block rounded-full uppercase font-semibold tracking-wide">
+  <span className="inline-block mr-2 px-2 text-gray-800 text-xs font-semibold tracking-wide bg-gray-200 rounded-full uppercase">
     {label}
   </span>
 )

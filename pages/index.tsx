@@ -1,13 +1,22 @@
 import Head from 'next/head'
 
 import fetchStockByIndex, { StockIndex } from '../src/api/fetchStockByIndex'
-import StockCard from '../src/components/stockCard'
+import StockCard from '../src/components/StockCard'
 
 interface Props {
   set100: StockIndex
+  set50StockNameList: string[]
+  setHDStockNameList: string[]
 }
 
-const Home = ({ set100 }: Props) => {
+const Home = ({ set100, set50StockNameList, setHDStockNameList }: Props) => {
+  const getStockTags = (name: string) =>
+    [
+      'SET100',
+      set50StockNameList.includes(name) ? 'SET50' : '',
+      setHDStockNameList.includes(name) ? 'SETHD' : '',
+    ].filter((name) => name)
+
   return (
     <div>
       <Head>
@@ -19,7 +28,7 @@ const Home = ({ set100 }: Props) => {
           Updated {set100.createdAt}
         </div>
         {set100.results.map((stock, index) => (
-          <StockCard key={index} stock={stock} tags={['SET100']} />
+          <StockCard key={index} stock={stock} tags={getStockTags(stock.name)} order={index + 1} />
         ))}
       </div>
     </div>
@@ -28,6 +37,11 @@ const Home = ({ set100 }: Props) => {
 
 export async function getServerSideProps() {
   const set100Response = await fetchStockByIndex('SET100')
+  const set50Response = await fetchStockByIndex('SET50')
+  const setHDResponse = await fetchStockByIndex('SETHD')
+
+  const set50StockNameList = set50Response?.results.map(({ name }) => name)
+  const setHDStockNameList = setHDResponse?.results.map(({ name }) => name)
 
   if (!set100Response) {
     return {
@@ -38,6 +52,8 @@ export async function getServerSideProps() {
   return {
     props: {
       set100: set100Response,
+      set50StockNameList,
+      setHDStockNameList,
     },
   }
 }
