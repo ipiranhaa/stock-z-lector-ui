@@ -1,9 +1,14 @@
 import 'tailwindcss/tailwind.css'
 
 import type { AppProps } from 'next/app'
+import FilterProvider from '../src/components/FilterContext'
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <FilterProvider>
+      <Component {...pageProps} />
+    </FilterProvider>
+  )
 }
 
 export default MyApp
