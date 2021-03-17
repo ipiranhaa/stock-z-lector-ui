@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
+import { AvailableIndex } from '../type'
 
 interface StockResponse {
   name: string
@@ -21,6 +22,7 @@ interface StockIndexResponse {
 }
 
 export interface Stock {
+  id: number
   name: string
   price: number
   lossChance: number
@@ -33,6 +35,7 @@ export interface Stock {
   advice: string
   industry: string
   sector: string
+  tags: AvailableIndex[]
 }
 
 export interface StockIndex {
@@ -41,7 +44,8 @@ export interface StockIndex {
 }
 
 const stockModelMapper = (stockResponses: StockResponse[]): Stock[] =>
-  stockResponses.map((response) => ({
+  stockResponses.map((response, index) => ({
+    id: index + 1,
     name: response.name,
     price: Number(response.price.slice(1)),
     lossChance: Number(response.lossChance.slice(0, -1)),
@@ -54,6 +58,7 @@ const stockModelMapper = (stockResponses: StockResponse[]): Stock[] =>
     advice: response.advice,
     industry: response.industry,
     sector: response.sector,
+    tags: [],
   }))
 
 const fetchStockByIndex = async (

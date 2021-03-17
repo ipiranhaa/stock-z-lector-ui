@@ -5,6 +5,7 @@ import fetchStockByIndex, { StockIndex } from '../src/api/fetchStockByIndex'
 import StockCard from '../src/components/StockCard'
 import FilterModal from '../src/components/FilterModal'
 import { useFilterContext } from '../src/components/FilterContext'
+import stampMoreStockData, { TagOptions } from '../src/utilities/stampMoreStockData'
 
 interface Props {
   set100: StockIndex
@@ -12,20 +13,13 @@ interface Props {
   setHDStockNameList: string[]
 }
 
-const Home = ({ set100, set50StockNameList, setHDStockNameList }: Props) => {
+const Home = ({ set100 }: Props) => {
   const {
     state: { selectedIndex },
   } = useFilterContext()
   console.log('selectedIndex', selectedIndex)
 
   const [showModal, setShowModal] = useState(false)
-
-  const getStockTags = (name: string) =>
-    [
-      'SET100',
-      set50StockNameList.includes(name) ? 'SET50' : '',
-      setHDStockNameList.includes(name) ? 'SETHD' : '',
-    ].filter((name) => name)
 
   return (
     <div>
@@ -45,8 +39,8 @@ const Home = ({ set100, set50StockNameList, setHDStockNameList }: Props) => {
             Filter
           </button>
         </div>
-        {set100.results.map((stock, index) => (
-          <StockCard key={index} stock={stock} tags={getStockTags(stock.name)} order={index + 1} />
+        {set100.results.map((stock) => (
+          <StockCard key={stock.id} stock={stock} />
         ))}
       </div>
       {showModal && <FilterModal setShowModal={setShowModal} />}
@@ -59,18 +53,28 @@ export async function getServerSideProps() {
   const set50Response = await fetchStockByIndex('SET50')
   const setHDResponse = await fetchStockByIndex('SETHD')
 
-  const set50StockNameList = set50Response?.results.map(({ name }) => name)
-  const setHDStockNameList = setHDResponse?.results.map(({ name }) => name)
-
-  if (!set100Response) {
+  if (!set100Response || !set50Response || !setHDResponse) {
     return {
       notFound: true,
     }
   }
 
+  const set50StockNameList = set50Response.results.map(({ name }) => name)
+  const setHDStockNameList = setHDResponse.results.map(({ name }) => name)
+
+  const tagOptions: TagOptions = [
+    ['SET50', set50StockNameList],
+    ['SETHD', setHDStockNameList],
+  ]
+
+  const set100 = {
+    createdAt: set100Response.createdAt,
+    results: stampMoreStockData(set100Response.results, ['SET100'], tagOptions),
+  }
+
   return {
     props: {
-      set100: set100Response,
+      set100,
       set50StockNameList,
       setHDStockNameList,
     },

@@ -4,23 +4,21 @@ import Tag from './Tag'
 import ChatIcon from './icons/Chat'
 
 interface Props {
-  order: number
   stock: Stock
-  tags: string[]
 }
 
-const StockCard = ({ order, stock, tags }: Props) => {
+const StockCard = ({ stock }: Props) => {
   return (
     <div className="px-4">
       <div className="p-4 bg-white rounded-lg shadow-lg">
         <div className="flex items-baseline justify-between">
           <div className="">
-            {tags.map((tag, index) => (
+            {stock.tags.map((tag, index) => (
               <Tag key={index} label={tag} />
             ))}
           </div>
           <div className="">
-            <Tag label={String(order)} />
+            <Tag label={String(stock.id)} />
           </div>
         </div>
 
