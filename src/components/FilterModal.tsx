@@ -3,10 +3,11 @@ import { AvailableIndex } from '../type'
 import { useFilterContext } from './FilterContext'
 
 interface Props {
+  updatedAt: string
   setShowModal: (show: boolean) => void
 }
 
-const FilterModal = ({ setShowModal }: Props) => {
+const FilterModal = ({ setShowModal, updatedAt }: Props) => {
   const { state, actions } = useFilterContext()
   const { selectedIndex } = state
   const { setSelectedIndex } = actions
@@ -28,6 +29,7 @@ const FilterModal = ({ setShowModal }: Props) => {
         <div className="relative mx-auto my-6 w-auto max-w-6xl">
           <div className="relative flex flex-col w-full bg-white border-0 rounded-lg outline-none shadow-lg">
             <div className="relative flex-auto p-6">
+              Updated {updatedAt}
               <select
                 className="round-md px-2 w-full h-8 border rounded"
                 onChange={handleIndexSelecting}
@@ -43,7 +45,6 @@ const FilterModal = ({ setShowModal }: Props) => {
                 </option>
               </select>
             </div>
-
             <div className="flex items-center justify-end p-6">
               <button
                 className="background-transparent mb-1 mr-1 px-6 py-2 text-red-500 text-sm font-bold outline-none uppercase"
