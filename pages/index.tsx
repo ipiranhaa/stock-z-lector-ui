@@ -1,9 +1,10 @@
-import { useState, ChangeEvent } from 'react'
+import { useState } from 'react'
 import Head from 'next/head'
 
 import fetchStockByIndex, { StockIndex } from '../src/api/fetchStockByIndex'
 import StockCard from '../src/components/StockCard'
 import FilterModal from '../src/components/FilterModal'
+import Header from '../src/components/Header'
 import { useFilterContext } from '../src/components/FilterContext'
 import stampMoreStockData, { TagOptions } from '../src/utilities/stampMoreStockData'
 
@@ -19,11 +20,6 @@ const Home = ({ set100 }: Props) => {
   } = useFilterContext()
   const [showModal, setShowModal] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState([''])
-
-  const handleSearch = ({ target }: ChangeEvent<HTMLInputElement>) => {
-    const value = target.value.split(',')
-    setSearchKeyword(value)
-  }
 
   const filterStockList = set100.results.filter(({ tags }) => {
     if (selectedIndex.length < tags.length) {
@@ -50,22 +46,7 @@ const Home = ({ set100 }: Props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="min-h-screen bg-gray-100">
-        <div className="flex content-between p-4 text-gray-800 text-xs">
-          <input
-            className="text-md flex flex-grow px-4 py-2 text-right rounded"
-            type="text"
-            placeholder="SEARCH"
-            onChange={handleSearch}
-          />
-          <button
-            className="ml-4 px-4 py-2 text-white text-sm font-bold bg-blue-500 active:bg-blue-600 rounded outline-none shadow hover:shadow-lg uppercase"
-            type="button"
-            style={{ transition: 'all .15s ease' }}
-            onClick={() => setShowModal(true)}
-          >
-            Filter
-          </button>
-        </div>
+        <Header setShowModal={setShowModal} setSearchKeyword={setSearchKeyword} />
         <div className="grid gap-4 grid-cols-1">
           {searchStockList.map((stock) => (
             <StockCard key={stock.id} stock={stock} />
