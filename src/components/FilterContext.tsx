@@ -1,12 +1,13 @@
 import React, { createContext, useContext, ReactNode, useState } from 'react'
+import { defaultSelectedIndex } from '../settings'
 import { AvailableIndex } from '../type'
 
 interface FilterParams {
-  selectedIndex: AvailableIndex
+  selectedIndex: AvailableIndex[]
 }
 
 interface FilterParamActions {
-  setSelectedIndex: (indexing: AvailableIndex) => void
+  setSelectedIndex: (indexings: AvailableIndex[]) => void
 }
 
 interface Props {
@@ -26,7 +27,7 @@ export const useFilterContext = () => {
 }
 
 const FilterProvider = ({ children }: Props) => {
-  const [selectedIndex, setSelectedIndex] = useState<AvailableIndex>('SET100')
+  const [selectedIndex, setSelectedIndex] = useState<AvailableIndex[]>(defaultSelectedIndex)
 
   const store = {
     state: { selectedIndex },

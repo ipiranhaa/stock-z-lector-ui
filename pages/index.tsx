@@ -17,8 +17,6 @@ const Home = ({ set100 }: Props) => {
   const {
     state: { selectedIndex },
   } = useFilterContext()
-  console.log('selectedIndex', selectedIndex)
-
   const [showModal, setShowModal] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState([''])
 
@@ -27,7 +25,16 @@ const Home = ({ set100 }: Props) => {
     setSearchKeyword(value)
   }
 
-  const stockList = set100.results.filter(({ name }) => {
+  const filterStockList = set100.results.filter(({ tags }) => {
+    if (selectedIndex.length < tags.length) {
+      return tags.some((tag) => selectedIndex.includes(tag))
+    }
+    return tags.every((tag) => selectedIndex.includes(tag))
+  })
+
+  console.log(filterStockList)
+
+  const searchStockList = filterStockList.filter(({ name }) => {
     for (let index = 0; index < searchKeyword.length; index++) {
       if (name.toLowerCase().includes(searchKeyword[index].toLowerCase())) {
         return true
@@ -60,7 +67,7 @@ const Home = ({ set100 }: Props) => {
           </button>
         </div>
         <div className="grid gap-4 grid-cols-1">
-          {stockList.map((stock) => (
+          {searchStockList.map((stock) => (
             <StockCard key={stock.id} stock={stock} />
           ))}
         </div>

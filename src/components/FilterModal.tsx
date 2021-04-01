@@ -1,6 +1,10 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { useState } from 'react'
+import { Select } from 'antd'
 import { AvailableIndex } from '../type'
 import { useFilterContext } from './FilterContext'
+import { defaultSelectedIndex } from '../settings'
+
+const { Option } = Select
 
 interface Props {
   updatedAt: string
@@ -14,8 +18,8 @@ const FilterModal = ({ setShowModal, updatedAt }: Props) => {
 
   const [newIndex, setNewIndex] = useState(selectedIndex)
 
-  const handleIndexSelecting = ({ target }: ChangeEvent<HTMLSelectElement>) => {
-    setNewIndex(target.value as AvailableIndex)
+  const handleIndexSelecting = (values: AvailableIndex[]) => {
+    setNewIndex(values)
   }
 
   const handleSubmit = () => {
@@ -26,24 +30,23 @@ const FilterModal = ({ setShowModal, updatedAt }: Props) => {
   return (
     <>
       <div className="fixed z-50 inset-0 flex items-center justify-center outline-none overflow-x-hidden overflow-y-auto">
-        <div className="relative mx-auto my-6 w-auto max-w-6xl">
+        <div className="relative mx-6 my-6">
           <div className="relative flex flex-col w-full bg-white border-0 rounded-lg outline-none shadow-lg">
             <div className="relative flex-auto p-6">
-              Updated {updatedAt}
-              <select
-                className="round-md px-2 w-full h-8 border rounded"
+              <Select
+                mode="multiple"
+                style={{ width: '100%' }}
+                placeholder="Please select stock index"
+                defaultValue={selectedIndex}
                 onChange={handleIndexSelecting}
               >
-                <option value="SET100" selected={newIndex === 'SET100'}>
-                  SET100
-                </option>
-                <option value="SET50" selected={newIndex === 'SET50'}>
-                  SET50
-                </option>
-                <option value="SETHD" selected={newIndex === 'SETHD'}>
-                  SETHD
-                </option>
-              </select>
+                {defaultSelectedIndex.map((value, index) => (
+                  <Option key={index} value={value}>
+                    {value}
+                  </Option>
+                ))}
+              </Select>
+              Updated {updatedAt}
             </div>
             <div className="flex items-center justify-end p-6">
               <button
