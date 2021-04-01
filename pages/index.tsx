@@ -28,8 +28,6 @@ const Home = ({ set100 }: Props) => {
     return tags.every((tag) => selectedIndex.includes(tag))
   })
 
-  console.log(filterStockList)
-
   const searchStockList = filterStockList.filter(({ name }) => {
     for (let index = 0; index < searchKeyword.length; index++) {
       if (name.toLowerCase().includes(searchKeyword[index].toLowerCase())) {
@@ -47,7 +45,7 @@ const Home = ({ set100 }: Props) => {
       </Head>
       <div className="min-h-screen bg-gray-100">
         <Header setShowModal={setShowModal} setSearchKeyword={setSearchKeyword} />
-        <div className="grid gap-4 grid-cols-1">
+        <div className="grid gap-4 pb-4 px-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {searchStockList.map((stock) => (
             <StockCard key={stock.id} stock={stock} />
           ))}
