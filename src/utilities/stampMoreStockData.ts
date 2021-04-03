@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { Stock } from '../api/fetchStockByIndex'
 import { AvailableIndex } from '../type'
 
@@ -7,8 +8,8 @@ const stampMoreStockData = (
   stocks: Stock[],
   defaultTags: AvailableIndex[],
   tagOptions: TagOptions
-): Stock[] => {
-  return stocks.map((stock) => {
+): Stock[] =>
+  stocks.map((stock) => {
     const tags = tagOptions.reduce((tagPool, options) => {
       const [stampTag, stockList] = options
       if (stockList.includes(stock.name)) {
@@ -22,6 +23,5 @@ const stampMoreStockData = (
 
     return stock
   })
-}
 
 export default stampMoreStockData

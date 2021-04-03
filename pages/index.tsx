@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import Head from 'next/head'
 
-import fetchStockByIndex, { StockIndex } from '../src/api/fetchStockByIndex'
+import fetchStockByIndex, { Stock, StockIndex } from '../src/api/fetchStockByIndex'
 import StockCard from '../src/components/StockCard'
 import FilterModal from '../src/components/FilterModal'
 import Header from '../src/components/Header'
 import { useFilterContext } from '../src/components/FilterContext'
 import stampMoreStockData, { TagOptions } from '../src/utilities/stampMoreStockData'
+import { defaultSelectedIndustry, defaultSelectedSector } from '../src/settings'
 
 interface Props {
   set100: StockIndex
@@ -14,19 +15,35 @@ interface Props {
 
 const Home = ({ set100 }: Props) => {
   const {
-    state: { selectedIndex },
+    state: { selectedIndex, selectedIndustry, selectedSector },
   } = useFilterContext()
   const [showModal, setShowModal] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState([''])
 
-  const filterStockList = set100.results.filter(({ tags }) => {
+  const filterStockByIndex = set100.results.filter(({ tags }) => {
     if (selectedIndex.length < tags.length) {
       return tags.some((tag) => selectedIndex.includes(tag))
     }
     return tags.every((tag) => selectedIndex.includes(tag))
   })
 
-  const searchStockList = filterStockList.filter(({ name }) => {
+  const isSelectedIndustry = selectedIndustry !== defaultSelectedIndustry
+  const isSelectedSector = selectedSector !== defaultSelectedSector
+
+  let filteredStock: Stock[] = []
+  if (isSelectedIndustry && isSelectedSector) {
+    filteredStock = filterStockByIndex.filter(
+      ({ industry, sector }) => industry === selectedIndustry && sector === selectedSector
+    )
+  } else if (isSelectedIndustry) {
+    filteredStock = filterStockByIndex.filter(({ industry }) => industry === selectedIndustry)
+  } else if (isSelectedSector) {
+    filteredStock = filterStockByIndex.filter(({ sector }) => sector === selectedSector)
+  } else {
+    filteredStock = filterStockByIndex
+  }
+
+  const searchStockList = filteredStock.filter(({ name }) => {
     for (let index = 0; index < searchKeyword.length; index++) {
       if (name.toLowerCase().includes(searchKeyword[index].toLowerCase())) {
         return true

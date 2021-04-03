@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
+
 import { AvailableIndex } from '../type'
 
 interface StockResponse {
@@ -76,6 +77,8 @@ const fetchStockByIndex = async (
   } catch (error) {
     console.log(error)
   }
+
+  return undefined
 }
 
 export default fetchStockByIndex
