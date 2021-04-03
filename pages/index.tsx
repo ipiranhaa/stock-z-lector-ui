@@ -10,8 +10,6 @@ import stampMoreStockData, { TagOptions } from '../src/utilities/stampMoreStockD
 
 interface Props {
   set100: StockIndex
-  set50StockNameList: string[]
-  setHDStockNameList: string[]
 }
 
 const Home = ({ set100 }: Props) => {
