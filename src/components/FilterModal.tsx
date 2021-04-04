@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Select, Form, Alert } from 'antd'
 
 import { AvailableIndex } from '../type'
-import { defaultSelectedIndex } from '../settings'
+import { defaultSelectedIndex, defaultSelectedIndustry, defaultSelectedSector } from '../settings'
 import { IndustryId, industries, sectors, relations } from '../utilities/industries'
 
 import { useFilterContext } from './FilterContext'
@@ -41,6 +41,7 @@ const FilterModal = ({ setShowModal, updatedAt }: Props) => {
 
   const handleIndustrySelecting = (value: string) => {
     setNewIndustry(value)
+    setNewSector(defaultSelectedSector)
   }
 
   const handleSectorSelecting = (value: string) => {
@@ -78,12 +79,12 @@ const FilterModal = ({ setShowModal, updatedAt }: Props) => {
                 </Form.Item>
                 <Form.Item label="Industry">
                   <Select
-                    defaultValue={newIndustry}
+                    value={newIndustry}
                     style={{ width: '100%' }}
                     placeholder="Please select stock industry"
                     onChange={handleIndustrySelecting}
                   >
-                    <Option key="industry-all" value="all">
+                    <Option key="industry-all" value={defaultSelectedIndustry}>
                       All
                     </Option>
                     {Object.values(industries).map((value, index) => (
@@ -95,12 +96,12 @@ const FilterModal = ({ setShowModal, updatedAt }: Props) => {
                 </Form.Item>
                 <Form.Item label="Sector">
                   <Select
-                    defaultValue={newSector}
+                    value={newSector}
                     style={{ width: '100%' }}
                     placeholder="Please select stock sector"
                     onChange={handleSectorSelecting}
                   >
-                    <Option key="sector-all" value="all">
+                    <Option key="sector-all" value={defaultSelectedSector}>
                       All
                     </Option>
                     {availableSector.map((value, index) => (
