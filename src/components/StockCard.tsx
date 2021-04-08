@@ -12,12 +12,12 @@ interface Props {
 const StockCard = ({ stock }: Props) => (
   <div className="p-4 bg-white rounded-lg shadow-lg">
     <div className="flex items-baseline justify-between">
-      <div className="">
+      <div>
         {stock.tags.map((tag, index) => (
           <Tag key={index} label={tag} />
         ))}
       </div>
-      <div className="">
+      <div>
         <Tag label={String(stock.id)} />
       </div>
     </div>

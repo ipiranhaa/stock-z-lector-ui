@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Select, Form, Alert } from 'antd'
+import { Select, Form, Alert, Slider } from 'antd'
 
 import { AvailableIndex } from '../type'
 import { defaultSelectedIndex, defaultSelectedIndustry, defaultSelectedSector } from '../settings'
@@ -16,8 +16,13 @@ interface Props {
 
 const FilterModal = ({ setShowModal, updatedAt }: Props) => {
   const { state, actions } = useFilterContext()
-  const { selectedIndex, selectedIndustry, selectedSector } = state
-  const { setSelectedIndex, setSelectedIndustry, setSelectedSector } = actions
+  const { selectedIndex, selectedIndustry, selectedSector, selectedFactorsRate } = state
+  const {
+    setSelectedIndex,
+    setSelectedIndustry,
+    setSelectedSector,
+    setSelectedFactorsRate,
+  } = actions
 
   const [newIndex, setNewIndex] = useState(selectedIndex)
   const [newIndustry, setNewIndustry] = useState(selectedIndustry)
@@ -48,6 +53,10 @@ const FilterModal = ({ setShowModal, updatedAt }: Props) => {
     setNewSector(value)
   }
 
+  const handleFactorsRateSelecting = (values: [number, number]) => {
+    setSelectedFactorsRate(values)
+  }
+
   const handleSubmit = () => {
     setSelectedIndex(newIndex)
     setSelectedIndustry(newIndustry)
@@ -76,6 +85,13 @@ const FilterModal = ({ setShowModal, updatedAt }: Props) => {
                       </Option>
                     ))}
                   </Select>
+                </Form.Item>
+                <Form.Item label="Factors rate">
+                  <Slider
+                    range
+                    defaultValue={selectedFactorsRate}
+                    onChange={handleFactorsRateSelecting}
+                  />
                 </Form.Item>
                 <Form.Item label="Industry">
                   <Select

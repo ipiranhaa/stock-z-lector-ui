@@ -15,12 +15,17 @@ interface Props {
 
 const Home = ({ set100 }: Props) => {
   const {
-    state: { selectedIndex, selectedIndustry, selectedSector },
+    state: {
+      selectedIndex,
+      selectedIndustry,
+      selectedSector,
+      selectedFactorsRate: [startFactorsRate, endFactorsRate],
+    },
   } = useFilterContext()
   const [showModal, setShowModal] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState([''])
 
-  const filterStockByIndex = set100.results.filter(({ tags }) => {
+  const filteredByIndex = set100.results.filter(({ tags }) => {
     if (selectedIndex.length < tags.length) {
       return tags.some((tag) => selectedIndex.includes(tag))
     }
@@ -30,20 +35,25 @@ const Home = ({ set100 }: Props) => {
   const isSelectedIndustry = selectedIndustry !== defaultSelectedIndustry
   const isSelectedSector = selectedSector !== defaultSelectedSector
 
-  let filteredStock: Stock[] = []
+  let filteredByIndustry: Stock[] = []
   if (isSelectedIndustry && isSelectedSector) {
-    filteredStock = filterStockByIndex.filter(
+    filteredByIndustry = filteredByIndex.filter(
       ({ industry, sector }) => industry === selectedIndustry && sector === selectedSector
     )
   } else if (isSelectedIndustry) {
-    filteredStock = filterStockByIndex.filter(({ industry }) => industry === selectedIndustry)
+    filteredByIndustry = filteredByIndex.filter(({ industry }) => industry === selectedIndustry)
   } else if (isSelectedSector) {
-    filteredStock = filterStockByIndex.filter(({ sector }) => sector === selectedSector)
+    filteredByIndustry = filteredByIndex.filter(({ sector }) => sector === selectedSector)
   } else {
-    filteredStock = filterStockByIndex
+    filteredByIndustry = filteredByIndex
   }
 
-  const searchStockList = filteredStock.filter(({ name }) => {
+  const filteredByFactorsRate = filteredByIndustry.filter(
+    ({ factorPercentage }) =>
+      factorPercentage >= startFactorsRate && factorPercentage <= endFactorsRate
+  )
+
+  const searchStockList = filteredByFactorsRate.filter(({ name }) => {
     for (let index = 0; index < searchKeyword.length; index++) {
       if (name.toLowerCase().includes(searchKeyword[index].toLowerCase())) {
         return true
