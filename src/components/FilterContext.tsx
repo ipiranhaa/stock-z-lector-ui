@@ -5,6 +5,7 @@ import {
   defaultSelectedIndustry,
   defaultSelectedSector,
   defaultSelectedFactorsRate,
+  defaultSelectedAdvice,
 } from '../settings'
 import { AvailableIndex } from '../type'
 
@@ -13,6 +14,7 @@ interface FilterParams {
   selectedIndustry: string
   selectedSector: string
   selectedFactorsRate: [number, number]
+  selectedAdvice: string
 }
 
 interface FilterParamActions {
@@ -20,6 +22,7 @@ interface FilterParamActions {
   setSelectedIndustry: (industry: string) => void
   setSelectedSector: (sector: string) => void
   setSelectedFactorsRate: (factorsRate: [number, number]) => void
+  setSelectedAdvice: (sector: string) => void
 }
 
 interface Props {
@@ -43,14 +46,16 @@ const FilterProvider = ({ children }: Props) => {
   const [selectedIndustry, setSelectedIndustry] = useState(defaultSelectedIndustry)
   const [selectedSector, setSelectedSector] = useState(defaultSelectedSector)
   const [selectedFactorsRate, setSelectedFactorsRate] = useState(defaultSelectedFactorsRate)
+  const [selectedAdvice, setSelectedAdvice] = useState(defaultSelectedAdvice)
 
   const store = {
-    state: { selectedIndex, selectedIndustry, selectedSector, selectedFactorsRate },
+    state: { selectedIndex, selectedIndustry, selectedSector, selectedFactorsRate, selectedAdvice },
     actions: {
       setSelectedIndex,
       setSelectedIndustry,
       setSelectedSector,
       setSelectedFactorsRate,
+      setSelectedAdvice,
     },
   }
 

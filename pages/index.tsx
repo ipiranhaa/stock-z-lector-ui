@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import Head from 'next/head'
+import { Empty } from 'antd'
 
-import fetchStockByIndex, { Stock, StockIndex } from '../src/api/fetchStockByIndex'
+import fetchStockByIndex, { StockIndex } from '../src/api/fetchStockByIndex'
 import StockCard from '../src/components/StockCard'
 import FilterModal from '../src/components/FilterModal'
 import Header from '../src/components/Header'
 import { useFilterContext } from '../src/components/FilterContext'
 import stampMoreStockData, { TagOptions } from '../src/utilities/stampMoreStockData'
-import { defaultSelectedIndustry, defaultSelectedSector } from '../src/settings'
+import filter from '../src/utilities/filter'
 
 interface Props {
   set100: StockIndex
@@ -15,45 +16,20 @@ interface Props {
 
 const Home = ({ set100 }: Props) => {
   const {
-    state: {
-      selectedIndex,
-      selectedIndustry,
-      selectedSector,
-      selectedFactorsRate: [startFactorsRate, endFactorsRate],
-    },
+    state: { selectedIndex, selectedIndustry, selectedSector, selectedFactorsRate, selectedAdvice },
   } = useFilterContext()
   const [showModal, setShowModal] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState([''])
 
-  const filteredByIndex = set100.results.filter(({ tags }) => {
-    if (selectedIndex.length < tags.length) {
-      return tags.some((tag) => selectedIndex.includes(tag))
-    }
-    return tags.every((tag) => selectedIndex.includes(tag))
+  const filteredStock = filter(set100.results, {
+    selectedIndex,
+    selectedIndustry,
+    selectedSector,
+    selectedFactorsRate,
+    selectedAdvice,
   })
 
-  const isSelectedIndustry = selectedIndustry !== defaultSelectedIndustry
-  const isSelectedSector = selectedSector !== defaultSelectedSector
-
-  let filteredByIndustry: Stock[] = []
-  if (isSelectedIndustry && isSelectedSector) {
-    filteredByIndustry = filteredByIndex.filter(
-      ({ industry, sector }) => industry === selectedIndustry && sector === selectedSector
-    )
-  } else if (isSelectedIndustry) {
-    filteredByIndustry = filteredByIndex.filter(({ industry }) => industry === selectedIndustry)
-  } else if (isSelectedSector) {
-    filteredByIndustry = filteredByIndex.filter(({ sector }) => sector === selectedSector)
-  } else {
-    filteredByIndustry = filteredByIndex
-  }
-
-  const filteredByFactorsRate = filteredByIndustry.filter(
-    ({ factorPercentage }) =>
-      factorPercentage >= startFactorsRate && factorPercentage <= endFactorsRate
-  )
-
-  const searchStockList = filteredByFactorsRate.filter(({ name }) => {
+  const searchStockList = filteredStock.filter(({ name }) => {
     for (let index = 0; index < searchKeyword.length; index++) {
       if (name.toLowerCase().includes(searchKeyword[index].toLowerCase())) {
         return true
@@ -61,6 +37,8 @@ const Home = ({ set100 }: Props) => {
     }
     return false
   })
+
+  const haveFilteredStocks = searchStockList.length
 
   return (
     <>
@@ -70,10 +48,16 @@ const Home = ({ set100 }: Props) => {
       </Head>
       <div className="min-h-screen bg-gray-100">
         <Header setShowModal={setShowModal} setSearchKeyword={setSearchKeyword} />
-        <div className="grid gap-4 pb-4 px-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {searchStockList.map((stock) => (
-            <StockCard key={stock.id} stock={stock} />
-          ))}
+        <div
+          className={`grid gap-4 pb-4 px-4 sm:grid-cols-1 ${
+            haveFilteredStocks ? 'md:grid-cols-2 lg:grid-cols-3' : 'md:grid-cols-1 lg:grid-cols-1'
+          }`}
+        >
+          {haveFilteredStocks ? (
+            searchStockList.map((stock) => <StockCard key={stock.id} stock={stock} />)
+          ) : (
+            <Empty />
+          )}
         </div>
         {showModal && <FilterModal setShowModal={setShowModal} updatedAt={set100.createdAt} />}
       </div>

@@ -2,8 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { Select, Form, Alert, Slider } from 'antd'
 
 import { AvailableIndex } from '../type'
-import { defaultSelectedIndex, defaultSelectedIndustry, defaultSelectedSector } from '../settings'
-import { IndustryId, industries, sectors, relations } from '../utilities/industries'
+import {
+  defaultSelectedAdvice,
+  defaultSelectedIndex,
+  defaultSelectedIndustry,
+  defaultSelectedSector,
+} from '../settings'
+import { IndustryId, industries, sectors, relations } from '../constants/industries'
+import advice from '../constants/advice'
 
 import { useFilterContext } from './FilterContext'
 
@@ -16,17 +22,26 @@ interface Props {
 
 const FilterModal = ({ setShowModal, updatedAt }: Props) => {
   const { state, actions } = useFilterContext()
-  const { selectedIndex, selectedIndustry, selectedSector, selectedFactorsRate } = state
+  const {
+    selectedIndex,
+    selectedIndustry,
+    selectedSector,
+    selectedFactorsRate,
+    selectedAdvice,
+  } = state
   const {
     setSelectedIndex,
     setSelectedIndustry,
     setSelectedSector,
     setSelectedFactorsRate,
+    setSelectedAdvice,
   } = actions
 
   const [newIndex, setNewIndex] = useState(selectedIndex)
   const [newIndustry, setNewIndustry] = useState(selectedIndustry)
   const [newSector, setNewSector] = useState(selectedSector)
+  const [newFactorsRate, setNewFactorsRate] = useState(selectedFactorsRate)
+  const [newAdvice, setNewAdvice] = useState(selectedAdvice)
   const [availableSector, setAvailableSector] = useState(Object.values(sectors))
 
   useEffect(() => {
@@ -54,13 +69,19 @@ const FilterModal = ({ setShowModal, updatedAt }: Props) => {
   }
 
   const handleFactorsRateSelecting = (values: [number, number]) => {
-    setSelectedFactorsRate(values)
+    setNewFactorsRate(values)
+  }
+
+  const handleAdviceSelecting = (value: string) => {
+    setNewAdvice(value)
   }
 
   const handleSubmit = () => {
     setSelectedIndex(newIndex)
     setSelectedIndustry(newIndustry)
     setSelectedSector(newSector)
+    setSelectedFactorsRate(newFactorsRate)
+    setSelectedAdvice(newAdvice)
     setShowModal(false)
   }
 
@@ -89,9 +110,26 @@ const FilterModal = ({ setShowModal, updatedAt }: Props) => {
                 <Form.Item label="Factors rate">
                   <Slider
                     range
-                    defaultValue={selectedFactorsRate}
+                    defaultValue={newFactorsRate}
                     onChange={handleFactorsRateSelecting}
                   />
+                </Form.Item>
+                <Form.Item label="Advice">
+                  <Select
+                    value={newAdvice}
+                    style={{ width: '100%' }}
+                    placeholder="Please select stock advice"
+                    onChange={handleAdviceSelecting}
+                  >
+                    <Option key="advice-all" value={defaultSelectedAdvice}>
+                      All
+                    </Option>
+                    {advice.map((value, index) => (
+                      <Option key={`advice-${index}`} value={value}>
+                        {value}
+                      </Option>
+                    ))}
+                  </Select>
                 </Form.Item>
                 <Form.Item label="Industry">
                   <Select
