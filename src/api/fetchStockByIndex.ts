@@ -62,9 +62,7 @@ const stockModelMapper = (stockResponses: StockResponse[]): Stock[] =>
     tags: [],
   }))
 
-const fetchStockByIndex = async (
-  index: 'SET50' | 'SET100' | 'SETHD'
-): Promise<StockIndex | undefined> => {
+const fetchStockByIndex = async (index: AvailableIndex): Promise<StockIndex | undefined> => {
   try {
     const { data }: AxiosResponse<StockIndexResponse> = await axios.get(
       `https://raw.githubusercontent.com/ipiranhaa/stock-z-lector/main/src/indexing/${index}.json`

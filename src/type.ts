@@ -1,1 +1,1 @@
-export type AvailableIndex = 'SET100' | 'SET50' | 'SETHD'
+export type AvailableIndex = 'SET100' | 'SET50' | 'SETHD' | 'MAI'

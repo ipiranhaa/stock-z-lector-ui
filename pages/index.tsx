@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Head from 'next/head'
 import { Empty } from 'antd'
 
-import fetchStockByIndex, { StockIndex } from '../src/api/fetchStockByIndex'
+import fetchStockByIndex, { Stock, StockIndex } from '../src/api/fetchStockByIndex'
 import StockCard from '../src/components/StockCard'
 import FilterModal from '../src/components/FilterModal'
 import Header from '../src/components/Header'
@@ -11,17 +11,17 @@ import stampMoreStockData, { TagOptions } from '../src/utilities/stampMoreStockD
 import filter from '../src/utilities/filter'
 
 interface Props {
-  set100: StockIndex
+  allStocks: StockIndex
 }
 
-const Home = ({ set100 }: Props) => {
+const Home = ({ allStocks }: Props) => {
   const {
     state: { selectedIndex, selectedIndustry, selectedSector, selectedFactorsRate, selectedAdvice },
   } = useFilterContext()
   const [showModal, setShowModal] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState([''])
 
-  const filteredStock = filter(set100.results, {
+  const filteredStock = filter(allStocks.results, {
     selectedIndex,
     selectedIndustry,
     selectedSector,
@@ -59,7 +59,7 @@ const Home = ({ set100 }: Props) => {
             <Empty />
           )}
         </div>
-        {showModal && <FilterModal setShowModal={setShowModal} updatedAt={set100.createdAt} />}
+        {showModal && <FilterModal setShowModal={setShowModal} updatedAt={allStocks.createdAt} />}
       </div>
     </>
   )
@@ -69,8 +69,9 @@ export async function getServerSideProps() {
   const set100Response = await fetchStockByIndex('SET100')
   const set50Response = await fetchStockByIndex('SET50')
   const setHDResponse = await fetchStockByIndex('SETHD')
+  const maiResponse = await fetchStockByIndex('MAI')
 
-  if (!set100Response || !set50Response || !setHDResponse) {
+  if (!set100Response || !set50Response || !setHDResponse || !maiResponse) {
     return {
       notFound: true,
     }
@@ -78,10 +79,12 @@ export async function getServerSideProps() {
 
   const set50StockNameList = set50Response.results.map(({ name }) => name)
   const setHDStockNameList = setHDResponse.results.map(({ name }) => name)
+  const maiStockNameList = maiResponse.results.map(({ name }) => name)
 
   const tagOptions: TagOptions = [
     ['SET50', set50StockNameList],
     ['SETHD', setHDStockNameList],
+    ['MAI', maiStockNameList],
   ]
 
   const set100 = {
@@ -89,9 +92,31 @@ export async function getServerSideProps() {
     results: stampMoreStockData(set100Response.results, ['SET100'], tagOptions),
   }
 
+  const mai = {
+    createdAt: maiResponse.createdAt,
+    results: stampMoreStockData(maiResponse.results, [], tagOptions),
+  }
+
+  const allStocks = {
+    createdAt: set100.createdAt,
+    results: [...set100.results, ...mai.results].sort((aDetail: Stock, bDetail: Stock) => {
+      const aLinePercentage = aDetail.linePercentage
+      const bLinePercentage = bDetail.linePercentage
+
+      const aFactorPercentage = aDetail.factorPercentage
+      const bFactorPercentage = bDetail.factorPercentage
+
+      return (
+        bDetail.score - aDetail.score ||
+        aLinePercentage - bLinePercentage ||
+        bFactorPercentage - aFactorPercentage
+      )
+    }),
+  }
+
   return {
     props: {
-      set100,
+      allStocks,
       set50StockNameList,
       setHDStockNameList,
     },

@@ -29,14 +29,14 @@ const StockCard = ({ stock }: Props) => (
           <span className="text-gray-600 text-sm">฿ {stock.price}</span>
         </div>
         <div className="mt-1">
-          <span className="text-gray-600 text-sm">P/E {stock.pe}</span>
+          <span className="text-gray-600 text-sm">P/E {stock.pe || '-'}</span>
         </div>
         <div className="mt-1">
           <span className="text-gray-600 text-sm">P/BV {stock.pbv}</span>
         </div>
         <div className="mt-1">
           <span className="justify-items-center text-gray-600 text-sm">
-            <ChatIcon /> {stock.advice}
+            <ChatIcon /> {stock.advice || '-'}
           </span>
         </div>
       </div>
@@ -52,7 +52,7 @@ const StockCard = ({ stock }: Props) => (
           <span className="text-gray-600 text-sm">{stock.factorPercentage}% Factors rate</span>
         </div>
         <div className="mt-1">
-          <span className="text-gray-600 text-sm">{stock.dvdYield}% DVD Yield</span>
+          <span className="text-gray-600 text-sm">{stock.dvdYield || '-'}% DVD Yield</span>
         </div>
         <div className="mt-1">
           <span className="text-gray-600 text-sm">{stock.lossChance}% Loss chance</span>
