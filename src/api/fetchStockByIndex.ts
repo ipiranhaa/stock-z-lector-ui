@@ -23,7 +23,7 @@ interface StockIndexResponse {
 }
 
 export interface Stock {
-  id: number
+  id: string
   name: string
   price: number
   lossChance: number
@@ -44,9 +44,9 @@ export interface StockIndex {
   results: Stock[]
 }
 
-const stockModelMapper = (stockResponses: StockResponse[]): Stock[] =>
+const stockModelMapper = (stockResponses: StockResponse[], fetchedIndex: AvailableIndex): Stock[] =>
   stockResponses.map((response, index) => ({
-    id: index + 1,
+    id: `${fetchedIndex.toLowerCase()}-${index + 1}`,
     name: response.name,
     price: Number(response.price.slice(1)),
     lossChance: Number(response.lossChance.slice(0, -1)),
@@ -70,7 +70,7 @@ const fetchStockByIndex = async (index: AvailableIndex): Promise<StockIndex | un
     console.log(`Fetch ${index} stock.`)
     return {
       createdAt: data.createdAt,
-      results: stockModelMapper(data.results),
+      results: stockModelMapper(data.results, index),
     }
   } catch (error) {
     console.log(error)
