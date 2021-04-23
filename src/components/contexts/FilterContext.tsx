@@ -6,8 +6,8 @@ import {
   defaultSelectedSector,
   defaultSelectedFactorsRate,
   defaultSelectedAdvice,
-} from '../settings'
-import { AvailableIndex } from '../type'
+} from '../../settings'
+import { AvailableIndex } from '../../type'
 
 interface FilterParams {
   selectedIndex: AvailableIndex[]
@@ -35,7 +35,7 @@ const FilterContext = createContext<
 
 export const useFilterContext = () => {
   const context = useContext(FilterContext)
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useFilterContext must be used within a FilterProvider')
   }
   return context

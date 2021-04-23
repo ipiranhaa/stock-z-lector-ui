@@ -5,10 +5,13 @@ import { Empty } from 'antd'
 import fetchStockByIndex, { Stock, StockIndex } from '../src/api/fetchStockByIndex'
 import StockCard from '../src/components/StockCard'
 import FilterModal from '../src/components/FilterModal'
+import SortingModal from '../src/components/SortingModal'
 import Header from '../src/components/Header'
-import { useFilterContext } from '../src/components/FilterContext'
+import { useFilterContext } from '../src/components/contexts/FilterContext'
 import stampMoreStockData, { TagOptions } from '../src/utilities/stampMoreStockData'
 import filter from '../src/utilities/filter'
+import { useSortingContext } from '../src/components/contexts/SortingContext'
+import sort from '../src/utilities/sort'
 
 interface Props {
   allStocks: StockIndex
@@ -18,7 +21,10 @@ const Home = ({ allStocks }: Props) => {
   const {
     state: { selectedIndex, selectedIndustry, selectedSector, selectedFactorsRate, selectedAdvice },
   } = useFilterContext()
-  const [showModal, setShowModal] = useState(false)
+  const { selectedSortedBy } = useSortingContext()
+
+  const [isFilterModalShown, setIsFilterModalShown] = useState(false)
+  const [isSortingModalShown, setIsSortingModalShown] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState([''])
 
   const filteredStock = filter(allStocks.results, {
@@ -29,7 +35,9 @@ const Home = ({ allStocks }: Props) => {
     selectedAdvice,
   })
 
-  const searchStockList = filteredStock.filter(({ name }) => {
+  const sortedStock = sort(selectedSortedBy, filteredStock)
+
+  const searchStockList = sortedStock.filter(({ name }) => {
     for (let index = 0; index < searchKeyword.length; index++) {
       if (name.toLowerCase().includes(searchKeyword[index].toLowerCase())) {
         return true
@@ -44,10 +52,14 @@ const Home = ({ allStocks }: Props) => {
     <>
       <Head>
         <title>Stock Z-Lector</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link href="/favicon.ico" rel="icon" />
       </Head>
       <div className="min-h-screen bg-gray-100">
-        <Header setShowModal={setShowModal} setSearchKeyword={setSearchKeyword} />
+        <Header
+          setFilterModalShow={setIsFilterModalShown}
+          setSearchKeyword={setSearchKeyword}
+          setSortingModalShow={setIsSortingModalShown}
+        />
         <div
           className={`grid gap-4 pb-4 px-4 sm:grid-cols-1 ${
             haveFilteredStocks ? 'md:grid-cols-2 lg:grid-cols-3' : 'md:grid-cols-1 lg:grid-cols-1'
@@ -59,7 +71,15 @@ const Home = ({ allStocks }: Props) => {
             <Empty />
           )}
         </div>
-        {showModal && <FilterModal setShowModal={setShowModal} updatedAt={allStocks.createdAt} />}
+
+        {isFilterModalShown && (
+          <FilterModal
+            setIsFilterModalShown={setIsFilterModalShown}
+            updatedAt={allStocks.createdAt}
+          />
+        )}
+
+        {isSortingModalShown && <SortingModal setIsSortingModalShown={setIsSortingModalShown} />}
       </div>
     </>
   )

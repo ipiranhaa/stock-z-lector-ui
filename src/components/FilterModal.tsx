@@ -11,16 +11,16 @@ import {
 import { IndustryId, industries, sectors, relations } from '../constants/industries'
 import advice from '../constants/advice'
 
-import { useFilterContext } from './FilterContext'
+import { useFilterContext } from './contexts/FilterContext'
 
 const { Option } = Select
 
 interface Props {
   updatedAt: string
-  setShowModal: (show: boolean) => void
+  setIsFilterModalShown: (show: boolean) => void
 }
 
-const FilterModal = ({ setShowModal, updatedAt }: Props) => {
+const FilterModal = ({ setIsFilterModalShown, updatedAt }: Props) => {
   const { state, actions } = useFilterContext()
   const {
     selectedIndex,
@@ -82,7 +82,7 @@ const FilterModal = ({ setShowModal, updatedAt }: Props) => {
     setSelectedSector(newSector)
     setSelectedFactorsRate(newFactorsRate)
     setSelectedAdvice(newAdvice)
-    setShowModal(false)
+    setIsFilterModalShown(false)
   }
 
   return (
@@ -94,11 +94,11 @@ const FilterModal = ({ setShowModal, updatedAt }: Props) => {
               <Form layout="vertical">
                 <Form.Item label="Index">
                   <Select
-                    mode="multiple"
-                    style={{ width: '100%' }}
-                    placeholder="Please select stock index"
                     defaultValue={selectedIndex}
+                    mode="multiple"
                     onChange={handleIndexSelecting}
+                    placeholder="Please select stock index"
+                    style={{ width: '100%' }}
                   >
                     {defaultSelectedIndex.map((value, index) => (
                       <Option key={`index-${index}`} value={value}>
@@ -109,17 +109,17 @@ const FilterModal = ({ setShowModal, updatedAt }: Props) => {
                 </Form.Item>
                 <Form.Item label="Factors rate">
                   <Slider
-                    range
                     defaultValue={newFactorsRate}
                     onChange={handleFactorsRateSelecting}
+                    range
                   />
                 </Form.Item>
                 <Form.Item label="Advice">
                   <Select
-                    value={newAdvice}
-                    style={{ width: '100%' }}
-                    placeholder="Please select stock advice"
                     onChange={handleAdviceSelecting}
+                    placeholder="Please select stock advice"
+                    style={{ width: '100%' }}
+                    value={newAdvice}
                   >
                     <Option key="advice-all" value={defaultSelectedAdvice}>
                       All
@@ -133,10 +133,10 @@ const FilterModal = ({ setShowModal, updatedAt }: Props) => {
                 </Form.Item>
                 <Form.Item label="Industry">
                   <Select
-                    value={newIndustry}
-                    style={{ width: '100%' }}
-                    placeholder="Please select stock industry"
                     onChange={handleIndustrySelecting}
+                    placeholder="Please select stock industry"
+                    style={{ width: '100%' }}
+                    value={newIndustry}
                   >
                     <Option key="industry-all" value={defaultSelectedIndustry}>
                       All
@@ -150,10 +150,10 @@ const FilterModal = ({ setShowModal, updatedAt }: Props) => {
                 </Form.Item>
                 <Form.Item label="Sector">
                   <Select
-                    value={newSector}
-                    style={{ width: '100%' }}
-                    placeholder="Please select stock sector"
                     onChange={handleSectorSelecting}
+                    placeholder="Please select stock sector"
+                    style={{ width: '100%' }}
+                    value={newSector}
                   >
                     <Option key="sector-all" value={defaultSelectedSector}>
                       All
@@ -166,22 +166,22 @@ const FilterModal = ({ setShowModal, updatedAt }: Props) => {
                   </Select>
                 </Form.Item>
               </Form>
-              <Alert message={`Updated ${updatedAt}`} type="info" showIcon />
+              <Alert message={`Updated ${updatedAt}`} showIcon type="info" />
             </div>
             <div className="flex items-center justify-end p-6">
               <button
                 className="background-transparent mb-1 mr-1 px-6 py-2 text-red-500 text-sm font-bold outline-none uppercase"
-                type="button"
+                onClick={() => setIsFilterModalShown(false)}
                 style={{ transition: 'all .15s ease' }}
-                onClick={() => setShowModal(false)}
+                type="button"
               >
                 Close
               </button>
               <button
                 className="mb-1 mr-1 px-6 py-2 text-white text-sm font-bold bg-green-500 active:bg-green-600 rounded outline-none shadow hover:shadow-lg uppercase"
-                type="button"
-                style={{ transition: 'all .15s ease' }}
                 onClick={handleSubmit}
+                style={{ transition: 'all .15s ease' }}
+                type="button"
               >
                 Save Changes
               </button>

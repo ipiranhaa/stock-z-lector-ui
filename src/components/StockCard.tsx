@@ -49,13 +49,13 @@ const StockCard = ({ stock }: Props) => (
           </span>
         </div>
         <div className="mt-1">
-          <span className="text-gray-600 text-sm">{stock.factorPercentage}% Factors rate</span>
+          <span className="text-gray-600 text-sm">{stock.factorPercentage}% Factors Rate</span>
         </div>
         <div className="mt-1">
           <span className="text-gray-600 text-sm">{stock.dvdYield || '-'}% DVD Yield</span>
         </div>
         <div className="mt-1">
-          <span className="text-gray-600 text-sm">{stock.lossChance}% Loss chance</span>
+          <span className="text-gray-600 text-sm">{stock.lossChance}% Loss Chance</span>
         </div>
       </div>
     </div>
