@@ -27,7 +27,7 @@ const FilterModal = ({ setIsSortingModalShown }: Props) => {
                 {sortingChoices.map((sortedBy, index) => (
                   <li
                     key={index}
-                    className={`flex items-center h-8 hover:bg-gray-100 px-6 ${
+                    className={`flex items-center h-8 hover:bg-gray-100 px-6 cursor-pointer ${
                       selectedSortedBy === sortedBy && 'font-bold'
                     }`}
                     onClick={(event) => {
