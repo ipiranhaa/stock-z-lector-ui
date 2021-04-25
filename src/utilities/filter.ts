@@ -6,6 +6,7 @@ interface Filterer {
   selectedIndex: AvailableIndex[]
   selectedIndustry: string
   selectedSector: string
+  selectedScore: [number, number]
   selectedFactorsRate: [number, number]
   selectedAdvice: string
 }
@@ -15,11 +16,15 @@ const filter = (stockList: Stock[], filterer: Filterer) => {
     selectedIndex,
     selectedIndustry,
     selectedSector,
+    selectedScore: [startScore, endScore],
     selectedFactorsRate: [startFactorsRate, endFactorsRate],
     selectedAdvice,
   } = filterer
 
-  // Filter by stock index
+  //
+  // ─── FILTER BY STOCK INDEX ──────────────────────────────────────────────────────
+  //
+
   const filteredByIndex = stockList.filter(({ tags }) => {
     if (selectedIndex.length < tags.length) {
       return tags.some((tag) => selectedIndex.includes(tag))
@@ -27,7 +32,10 @@ const filter = (stockList: Stock[], filterer: Filterer) => {
     return tags.every((tag) => selectedIndex.includes(tag))
   })
 
-  // Filter by community advice
+  //
+  // ─── FILTER BY COMMUNITY ADVICE ─────────────────────────────────────────────────
+  //
+
   const isSelectedAdvice = selectedAdvice !== defaultSelectedAdvice
 
   let filteredByAdvice = filteredByIndex
@@ -38,7 +46,10 @@ const filter = (stockList: Stock[], filterer: Filterer) => {
   const isSelectedIndustry = selectedIndustry !== defaultSelectedIndustry
   const isSelectedSector = selectedSector !== defaultSelectedSector
 
-  // Filter by industry and sector
+  //
+  // ─── FILTER BY INDUSTRY AND SECTOR ──────────────────────────────────────────────
+  //
+
   let filteredByIndustry: Stock[] = []
   if (isSelectedIndustry && isSelectedSector) {
     filteredByIndustry = filteredByAdvice.filter(
@@ -52,8 +63,19 @@ const filter = (stockList: Stock[], filterer: Filterer) => {
     filteredByIndustry = filteredByAdvice
   }
 
-  // Filter by factors rate
-  const filteredByFactorsRate = filteredByIndustry.filter(
+  //
+  // ─── FILTER BY SCORE RANGE ──────────────────────────────────────────────────────
+  //
+
+  const filteredByScore = filteredByIndustry.filter(
+    ({ score }) => score >= startScore && score <= endScore
+  )
+
+  //
+  // ─── FILTER BY FACTORS RATE RANGE ───────────────────────────────────────────────
+  //
+
+  const filteredByFactorsRate = filteredByScore.filter(
     ({ factorPercentage }) =>
       factorPercentage >= startFactorsRate && factorPercentage <= endFactorsRate
   )

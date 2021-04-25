@@ -26,6 +26,7 @@ const FilterModal = ({ setIsFilterModalShown, updatedAt }: Props) => {
     selectedIndex,
     selectedIndustry,
     selectedSector,
+    selectedScore,
     selectedFactorsRate,
     selectedAdvice,
   } = state
@@ -33,6 +34,7 @@ const FilterModal = ({ setIsFilterModalShown, updatedAt }: Props) => {
     setSelectedIndex,
     setSelectedIndustry,
     setSelectedSector,
+    setSelectedScore,
     setSelectedFactorsRate,
     setSelectedAdvice,
   } = actions
@@ -40,6 +42,7 @@ const FilterModal = ({ setIsFilterModalShown, updatedAt }: Props) => {
   const [newIndex, setNewIndex] = useState(selectedIndex)
   const [newIndustry, setNewIndustry] = useState(selectedIndustry)
   const [newSector, setNewSector] = useState(selectedSector)
+  const [newScore, setNewScore] = useState(selectedScore)
   const [newFactorsRate, setNewFactorsRate] = useState(selectedFactorsRate)
   const [newAdvice, setNewAdvice] = useState(selectedAdvice)
   const [availableSector, setAvailableSector] = useState(Object.values(sectors))
@@ -68,6 +71,10 @@ const FilterModal = ({ setIsFilterModalShown, updatedAt }: Props) => {
     setNewSector(value)
   }
 
+  const handleScoreSelecting = (values: [number, number]) => {
+    setNewScore(values)
+  }
+
   const handleFactorsRateSelecting = (values: [number, number]) => {
     setNewFactorsRate(values)
   }
@@ -80,6 +87,7 @@ const FilterModal = ({ setIsFilterModalShown, updatedAt }: Props) => {
     setSelectedIndex(newIndex)
     setSelectedIndustry(newIndustry)
     setSelectedSector(newSector)
+    setSelectedScore(newScore)
     setSelectedFactorsRate(newFactorsRate)
     setSelectedAdvice(newAdvice)
     setIsFilterModalShown(false)
@@ -106,6 +114,9 @@ const FilterModal = ({ setIsFilterModalShown, updatedAt }: Props) => {
                       </Option>
                     ))}
                   </Select>
+                </Form.Item>
+                <Form.Item label="Score">
+                  <Slider defaultValue={newScore} max={10} onChange={handleScoreSelecting} range />
                 </Form.Item>
                 <Form.Item label="Factors rate">
                   <Slider

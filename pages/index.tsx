@@ -19,7 +19,14 @@ interface Props {
 
 const Home = ({ allStocks }: Props) => {
   const {
-    state: { selectedIndex, selectedIndustry, selectedSector, selectedFactorsRate, selectedAdvice },
+    state: {
+      selectedIndex,
+      selectedIndustry,
+      selectedSector,
+      selectedScore,
+      selectedFactorsRate,
+      selectedAdvice,
+    },
   } = useFilterContext()
   const { selectedSortedBy } = useSortingContext()
 
@@ -31,6 +38,7 @@ const Home = ({ allStocks }: Props) => {
     selectedIndex,
     selectedIndustry,
     selectedSector,
+    selectedScore,
     selectedFactorsRate,
     selectedAdvice,
   })
