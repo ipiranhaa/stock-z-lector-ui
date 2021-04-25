@@ -1,17 +1,19 @@
 import { useState } from 'react'
 import Head from 'next/head'
+import dynamic from 'next/dynamic'
 import { Empty } from 'antd'
 
 import fetchStockByIndex, { Stock, StockIndex } from '../src/api/fetchStockByIndex'
 import StockCard from '../src/components/StockCard'
-import FilterModal from '../src/components/FilterModal'
-import SortingModal from '../src/components/SortingModal'
 import Header from '../src/components/Header'
 import { useFilterContext } from '../src/components/contexts/FilterContext'
 import stampMoreStockData, { TagOptions } from '../src/utilities/stampMoreStockData'
 import filter from '../src/utilities/filter'
 import { useSortingContext } from '../src/components/contexts/SortingContext'
 import sort from '../src/utilities/sort'
+
+const FilterModal = dynamic(() => import('../src/components/FilterModal.dynamic'))
+const SortingModal = dynamic(() => import('../src/components/SortingModal.dynamic'))
 
 interface Props {
   allStocks: StockIndex
