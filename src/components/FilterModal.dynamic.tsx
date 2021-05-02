@@ -97,7 +97,7 @@ const FilterModal = ({ setIsFilterModalShown, updatedAt }: Props) => {
     <>
       <div className="fixed z-50 inset-0 flex items-center justify-center outline-none overflow-x-hidden overflow-y-auto">
         <div className="relative mx-6 my-6">
-          <div className="relative flex flex-col w-full bg-white border-0 rounded-lg outline-none shadow-lg">
+          <div className="relative flex flex-col w-full dark:bg-gray-800 bg-white border-0 rounded-lg outline-none shadow-lg">
             <div className="relative flex-auto p-6">
               <Form layout="vertical">
                 <Form.Item label="Index">

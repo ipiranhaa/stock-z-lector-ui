@@ -1,5 +1,5 @@
 import 'tailwindcss/tailwind.css'
-import 'antd/dist/antd.css'
+import 'antd/dist/antd.dark.css'
 
 import { ThemeProvider } from 'next-themes'
 import type { AppProps } from 'next/app'

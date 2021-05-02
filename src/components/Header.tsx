@@ -29,7 +29,7 @@ const Header = ({ setSearchKeyword, setFilterModalShow, setSortingModalShow }: P
       </a>
       <Input allowClear onChange={handleSearch} placeholder="SEARCH" />
       <button
-        className="px-4 py-2 text-white text-sm bg-blue-500 active:bg-blue-600 dark:bg-blue-900 rounded outline-none shadow hover:shadow-lg uppercase"
+        className="p-2 text-white text-sm bg-blue-500 active:bg-blue-600 dark:bg-gray-800 rounded outline-none shadow hover:shadow-lg uppercase"
         onClick={() => setFilterModalShow(true)}
         style={{ transition: 'all .15s ease' }}
         type="button"
@@ -37,7 +37,7 @@ const Header = ({ setSearchKeyword, setFilterModalShow, setSortingModalShow }: P
         <FilterIcon />
       </button>
       <button
-        className="px-4 py-2 text-white text-sm bg-blue-500 active:bg-blue-600 dark:bg-blue-900 rounded outline-none shadow hover:shadow-lg uppercase"
+        className="p-2 text-white text-sm bg-blue-500 active:bg-blue-600 dark:bg-gray-800 rounded outline-none shadow hover:shadow-lg uppercase"
         onClick={() => setSortingModalShow(true)}
         style={{ transition: 'all .15s ease' }}
         type="button"
