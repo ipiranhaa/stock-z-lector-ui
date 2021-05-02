@@ -96,10 +96,12 @@ const Home = ({ allStocks }: Props) => {
 }
 
 export async function getServerSideProps() {
-  const set100Response = await fetchStockByIndex('SET100')
-  const set50Response = await fetchStockByIndex('SET50')
-  const setHDResponse = await fetchStockByIndex('SETHD')
-  const maiResponse = await fetchStockByIndex('MAI')
+  const [set100Response, set50Response, setHDResponse, maiResponse] = await Promise.all([
+    fetchStockByIndex('SET100'),
+    fetchStockByIndex('SET50'),
+    fetchStockByIndex('SETHD'),
+    fetchStockByIndex('MAI'),
+  ])
 
   if (!set100Response || !set50Response || !setHDResponse || !maiResponse) {
     return {

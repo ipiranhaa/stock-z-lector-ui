@@ -2,6 +2,11 @@ import axios, { AxiosResponse } from 'axios'
 
 import { AvailableIndex } from '../type'
 
+interface Dividend {
+  lastDate: string
+  predictedDate: string
+}
+
 interface StockResponse {
   name: string
   price: string
@@ -15,6 +20,10 @@ interface StockResponse {
   advice: string
   industry: string
   sector: string
+  dividend: {
+    lastDate: string
+    predictedDate: string
+  }
 }
 
 interface StockIndexResponse {
@@ -37,6 +46,7 @@ export interface Stock {
   industry: string
   sector: string
   tags: AvailableIndex[]
+  dividend: Dividend
 }
 
 export interface StockIndex {
@@ -60,6 +70,10 @@ const stockModelMapper = (stockResponses: StockResponse[], fetchedIndex: Availab
     industry: response.industry,
     sector: response.sector,
     tags: [],
+    dividend: {
+      lastDate: response.dividend.lastDate,
+      predictedDate: response.dividend.predictedDate,
+    },
   }))
 
 const fetchStockByIndex = async (index: AvailableIndex): Promise<StockIndex | undefined> => {
