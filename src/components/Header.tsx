@@ -18,13 +18,18 @@ const Header = ({ setSearchKeyword, setFilterModalShow, setSortingModalShow }: P
   }
 
   return (
-    <div className="flex gap-4 content-between p-4 text-gray-800 text-xs">
-      <a href="https://github.com/ipiranhaa/stock-z-lector-ui" rel="noreferrer" target="_blank">
+    <div className="flex gap-4 content-between p-4 text-xs">
+      <a
+        className="dark:text-white"
+        href="https://github.com/ipiranhaa/stock-z-lector-ui"
+        rel="noreferrer"
+        target="_blank"
+      >
         <GithubIcon />
       </a>
       <Input allowClear onChange={handleSearch} placeholder="SEARCH" />
       <button
-        className="px-4 py-2 text-white text-sm bg-blue-500 active:bg-blue-600 rounded outline-none shadow hover:shadow-lg uppercase"
+        className="px-4 py-2 text-white text-sm bg-blue-500 active:bg-blue-600 dark:bg-blue-900 rounded outline-none shadow hover:shadow-lg uppercase"
         onClick={() => setFilterModalShow(true)}
         style={{ transition: 'all .15s ease' }}
         type="button"
@@ -32,7 +37,7 @@ const Header = ({ setSearchKeyword, setFilterModalShow, setSortingModalShow }: P
         <FilterIcon />
       </button>
       <button
-        className="px-4 py-2 text-white text-sm bg-blue-500 active:bg-blue-600 rounded outline-none shadow hover:shadow-lg uppercase"
+        className="px-4 py-2 text-white text-sm bg-blue-500 active:bg-blue-600 dark:bg-blue-900 rounded outline-none shadow hover:shadow-lg uppercase"
         onClick={() => setSortingModalShow(true)}
         style={{ transition: 'all .15s ease' }}
         type="button"

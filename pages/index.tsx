@@ -64,7 +64,7 @@ const Home = ({ allStocks }: Props) => {
         <title>Stock Z-Lector</title>
         <link href="/favicon.ico" rel="icon" />
       </Head>
-      <div className="min-h-screen bg-gray-100">
+      <div className="min-h-screen dark:text-white bg-gray-100 dark:bg-gray-800">
         <Header
           setFilterModalShow={setIsFilterModalShown}
           setSearchKeyword={setSearchKeyword}
