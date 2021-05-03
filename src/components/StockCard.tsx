@@ -44,7 +44,7 @@ const StockCard = ({ stock }: Props) => {
       rel="noreferrer"
       target="_blank"
     >
-      <div className="p-4 dark:bg-gray-900 bg-white rounded-lg shadow-lg">
+      <div className="p-4 dark:bg-gray-800 bg-white rounded-lg shadow-lg">
         <div className="flex items-baseline justify-between">
           <div>
             {stock.tags.map((tag, index) => (
@@ -112,7 +112,10 @@ const StockCard = ({ stock }: Props) => {
           <div className="text-center">
             <span className="text-xs">
               Dividend in{' '}
-              <span className={`${dividendIn <= 60 && 'text-green-700'}`}>{dividendIn}</span> days
+              <span className={`${dividendIn <= 60 && 'text-green-700 font-bold'}`}>
+                {dividendIn}
+              </span>{' '}
+              days
             </span>
           </div>
         )}

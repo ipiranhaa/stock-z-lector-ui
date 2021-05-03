@@ -3,6 +3,7 @@ import React from 'react'
 const SortingIcon = () => (
   <svg
     className="inline-block"
+    fill="#fff"
     height={36}
     viewBox="0 0 24 24"
     width={36}
