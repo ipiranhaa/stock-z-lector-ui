@@ -1,5 +1,5 @@
 import React from 'react'
-import { differenceInDays, isPast } from 'date-fns'
+import { differenceInDays, isPast, addDays } from 'date-fns'
 
 import { Stock } from '../api/fetchStockByIndex'
 
@@ -31,9 +31,9 @@ const StockCard = ({ stock }: Props) => {
     const todayDate = new Date()
 
     if (isPast(lastDate)) {
-      dividendIn = differenceInDays(predictedDate, todayDate)
+      dividendIn = differenceInDays(predictedDate, addDays(todayDate, 1))
     } else {
-      dividendIn = differenceInDays(lastDate, todayDate)
+      dividendIn = differenceInDays(lastDate, addDays(todayDate, -1))
     }
   }
 
@@ -55,7 +55,6 @@ const StockCard = ({ stock }: Props) => {
             <Tag label={String(stock.id)} />
           </div>
         </div>
-
         <div className="grid grid-cols-2 mb-2">
           <div>
             <h4 className="mt-1 dark:text-white text-xl font-bold">{stock.name}</h4>
@@ -108,17 +107,19 @@ const StockCard = ({ stock }: Props) => {
 
         <hr className="my-2" />
 
-        {dividendIn && dividendIn >= 0 && (
-          <div className="text-center">
-            <span className="text-xs">
-              Dividend in{' '}
-              <span className={`${dividendIn <= 60 && 'text-green-700 font-bold'}`}>
-                {dividendIn}
-              </span>{' '}
-              days
-            </span>
-          </div>
-        )}
+        <div className="text-center">
+          <span className="text-xs">
+            Dividend in{' '}
+            <span
+              className={`${
+                dividendIn !== undefined && dividendIn <= 60 && 'text-green-700 font-bold'
+              }`}
+            >
+              {dividendIn !== undefined ? dividendIn : '-'}
+            </span>{' '}
+            days
+          </span>
+        </div>
 
         <div className="text-center">
           <span className="text-xs">{stock.industry}</span>
