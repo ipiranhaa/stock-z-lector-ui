@@ -26,10 +26,10 @@ const FilterModal = ({ setIsSortingModalShown }: Props) => {
               <ul className="w-full divide-gray-200 divide-y">
                 {sortingChoices.map((sortedBy, index) => (
                   <li
-                    key={index}
                     className={`flex items-center h-8 hover:bg-gray-100 dark:hover:bg-gray-700 px-6 cursor-pointer ${
                       selectedSortedBy === sortedBy && 'font-bold'
                     }`}
+                    key={index}
                     onClick={(event) => {
                       event.stopPropagation()
                       handleSubmitSortedBy(sortedBy)

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import { Empty } from 'antd'
@@ -19,7 +19,7 @@ interface Props {
   allStocks: StockIndex
 }
 
-const Home = ({ allStocks }: Props) => {
+const Home = ({ allStocks: stocks }: Props) => {
   const {
     state: {
       selectedIndex,
@@ -35,6 +35,13 @@ const Home = ({ allStocks }: Props) => {
   const [isFilterModalShown, setIsFilterModalShown] = useState(false)
   const [isSortingModalShown, setIsSortingModalShown] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState([''])
+  const [allStocks, setAllStocks] = useState<StockIndex | undefined>()
+
+  useEffect(() => {
+    setAllStocks(stocks)
+  }, [])
+  
+  if(!allStocks?.results) return (<h1>Loading...</h1>)
 
   const filteredStock = filter(allStocks.results, {
     selectedIndex,

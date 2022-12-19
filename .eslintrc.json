@@ -12,7 +12,14 @@
       "typescript": {}
     }
   },
-  "extends": ["airbnb", "prettier", "plugin:jest-dom/recommended", "plugin:tailwind/recommended"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "prettier",
+    "plugin:jest-dom/recommended",
+    "plugin:tailwind/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "plugins": ["@typescript-eslint", "import", "react-hooks"],
   "rules": {
     "@typescript-eslint/no-inferrable-types": "error",

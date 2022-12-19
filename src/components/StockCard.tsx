@@ -13,9 +13,8 @@ interface Props {
 const StockCard = ({ stock }: Props) => {
   let dividendIn
   if (stock.dividend.lastDate !== '-' && stock.dividend.predictedDate !== '-') {
-    const [lastDividendDay, lastDividendMonth, lastDividendYear] = stock.dividend.lastDate.split(
-      '/'
-    )
+    const [lastDividendDay, lastDividendMonth, lastDividendYear] =
+      stock.dividend.lastDate.split('/')
     const [predictedDay, predictedMonth, predictedYear] = stock.dividend.predictedDate.split('/')
 
     const lastDate = new Date(
