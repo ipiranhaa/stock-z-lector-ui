@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import { Empty } from 'antd'
+import { Spin } from 'antd';
 
 import fetchStockByIndex, { Stock, StockIndex } from '../src/api/fetchStockByIndex'
 import StockCard from '../src/components/StockCard'
@@ -11,7 +12,6 @@ import stampMoreStockData, { TagOptions } from '../src/utilities/stampMoreStockD
 import filter from '../src/utilities/filter'
 import { useSortingContext } from '../src/components/contexts/SortingContext'
 import sort from '../src/utilities/sort'
-
 const FilterModal = dynamic(() => import('../src/components/FilterModal.dynamic'))
 const SortingModal = dynamic(() => import('../src/components/SortingModal.dynamic'))
 
@@ -27,7 +27,6 @@ const Home = ({ allStocks: stocks }: Props) => {
       selectedSector,
       selectedScore,
       selectedFactorsRate,
-      selectedAdvice,
     },
   } = useFilterContext()
   const { selectedSortedBy } = useSortingContext()
@@ -41,7 +40,7 @@ const Home = ({ allStocks: stocks }: Props) => {
     setAllStocks(stocks)
   }, [])
   
-  if(!allStocks?.results) return (<h1>Loading...</h1>)
+  if(!allStocks?.results) return (<div className="flex justify-center items-center min-h-screen"><Spin  size="large"/></div>)
 
   const filteredStock = filter(allStocks.results, {
     selectedIndex,
@@ -49,7 +48,6 @@ const Home = ({ allStocks: stocks }: Props) => {
     selectedSector,
     selectedScore,
     selectedFactorsRate,
-    selectedAdvice,
   })
 
   const sortedStock = sort(selectedSortedBy, filteredStock)

@@ -1,8 +1,6 @@
 /**
  * @type {import('next').NextConfig}
  */
-const nextConfig = {
-  webpack5: true,
+module.exports = {
+  /* config options here */
 }
-
-module.exports = nextConfig

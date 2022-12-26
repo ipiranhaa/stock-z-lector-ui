@@ -4,7 +4,6 @@ import { differenceInDays, isPast, addDays } from 'date-fns'
 import { Stock } from '../api/fetchStockByIndex'
 
 import Tag from './Tag'
-import ChatIcon from './icons/Chat'
 
 interface Props {
   stock: Stock
@@ -67,11 +66,6 @@ const StockCard = ({ stock }: Props) => {
             </div>
             <div className="mt-1">
               <span className="dark:text-gray-300 text-gray-600 text-sm">P/BV {stock.pbv}</span>
-            </div>
-            <div className="mt-1">
-              <span className="justify-items-center dark:text-gray-300 text-gray-600 text-sm">
-                <ChatIcon /> {stock.advice || '-'}
-              </span>
             </div>
           </div>
           <div className="pl-4 border-l">

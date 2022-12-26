@@ -17,7 +17,6 @@ interface StockResponse {
   pe: number
   pbv: number
   dvdYield: string
-  advice: string
   industry: string
   sector: string
   dividend: {
@@ -42,7 +41,6 @@ export interface Stock {
   pe: number
   pbv: number
   dvdYield: number
-  advice: string
   industry: string
   sector: string
   tags: AvailableIndex[]
@@ -66,7 +64,6 @@ const stockModelMapper = (stockResponses: StockResponse[], fetchedIndex: Availab
     pe: response.pe,
     pbv: response.pbv,
     dvdYield: Number(response.dvdYield.slice(0, -1)),
-    advice: response.advice,
     industry: response.industry,
     sector: response.sector,
     tags: [],

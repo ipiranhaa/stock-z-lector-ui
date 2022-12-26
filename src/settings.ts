@@ -9,7 +9,6 @@ export const defaultSelectedIndustry = 'All'
 export const defaultSelectedSector = 'All'
 export const defaultSelectedScore: [number, number] = [0, 10]
 export const defaultSelectedFactorsRate: [number, number] = [0, 100]
-export const defaultSelectedAdvice = 'All'
 
 //
 // ─── SORTING ────────────────────────────────────────────────────────────────────

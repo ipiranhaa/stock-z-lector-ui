@@ -3,13 +3,11 @@ import { Select, Form, Alert, Slider } from 'antd'
 
 import { AvailableIndex } from '../type'
 import {
-  defaultSelectedAdvice,
   defaultSelectedIndex,
   defaultSelectedIndustry,
   defaultSelectedSector,
 } from '../settings'
 import { IndustryId, industries, sectors, relations } from '../constants/industries'
-import advice from '../constants/advice'
 
 import { useFilterContext } from './contexts/FilterContext'
 
@@ -28,7 +26,6 @@ const FilterModal = ({ setIsFilterModalShown, updatedAt }: Props) => {
     selectedSector,
     selectedScore,
     selectedFactorsRate,
-    selectedAdvice,
   } = state
   const {
     setSelectedIndex,
@@ -36,7 +33,6 @@ const FilterModal = ({ setIsFilterModalShown, updatedAt }: Props) => {
     setSelectedSector,
     setSelectedScore,
     setSelectedFactorsRate,
-    setSelectedAdvice,
   } = actions
 
   const [newIndex, setNewIndex] = useState(selectedIndex)
@@ -44,7 +40,6 @@ const FilterModal = ({ setIsFilterModalShown, updatedAt }: Props) => {
   const [newSector, setNewSector] = useState(selectedSector)
   const [newScore, setNewScore] = useState(selectedScore)
   const [newFactorsRate, setNewFactorsRate] = useState(selectedFactorsRate)
-  const [newAdvice, setNewAdvice] = useState(selectedAdvice)
   const [availableSector, setAvailableSector] = useState(Object.values(sectors))
 
   useEffect(() => {
@@ -79,17 +74,12 @@ const FilterModal = ({ setIsFilterModalShown, updatedAt }: Props) => {
     setNewFactorsRate(values)
   }
 
-  const handleAdviceSelecting = (value: string) => {
-    setNewAdvice(value)
-  }
-
   const handleSubmit = () => {
     setSelectedIndex(newIndex)
     setSelectedIndustry(newIndustry)
     setSelectedSector(newSector)
     setSelectedScore(newScore)
     setSelectedFactorsRate(newFactorsRate)
-    setSelectedAdvice(newAdvice)
     setIsFilterModalShown(false)
   }
 
@@ -124,23 +114,6 @@ const FilterModal = ({ setIsFilterModalShown, updatedAt }: Props) => {
                     onChange={handleFactorsRateSelecting}
                     range
                   />
-                </Form.Item>
-                <Form.Item label="Advice">
-                  <Select
-                    onChange={handleAdviceSelecting}
-                    placeholder="Please select stock advice"
-                    style={{ width: '100%' }}
-                    value={newAdvice}
-                  >
-                    <Option key="advice-all" value={defaultSelectedAdvice}>
-                      All
-                    </Option>
-                    {advice.map((value, index) => (
-                      <Option key={`advice-${index}`} value={value}>
-                        {value}
-                      </Option>
-                    ))}
-                  </Select>
                 </Form.Item>
                 <Form.Item label="Industry">
                   <Select
